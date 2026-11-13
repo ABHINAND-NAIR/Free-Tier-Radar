@@ -1,5 +1,4 @@
 {
-  "$schema": "./schema.md",
   "description": "One entry per service. verdict must be: free-forever | trial | card-trap | credit-based",
   "services": [
     {
@@ -33,6 +32,16 @@
       "checked": "2026-11-13"
     },
     {
+      "name": "Netlify Free",
+      "category": "hosting",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "100 GB bandwidth/month, 300 build minutes/month",
+      "catch": "Build minutes run out fast if you redeploy constantly",
+      "link": "https://www.netlify.com/pricing/",
+      "checked": "2026-11-13"
+    },
+    {
       "name": "Render",
       "category": "hosting",
       "verdict": "card-trap",
@@ -43,13 +52,23 @@
       "checked": "2026-11-13"
     },
     {
-      "name": "Groq Cloud",
-      "category": "ai",
+      "name": "Oracle Cloud Free Tier",
+      "category": "hosting",
       "verdict": "free-forever",
-      "card_required": false,
-      "limits": "Free tier with rate limits, very fast LLMs",
-      "catch": "Rate limits hit hard on free tier; needs monitoring",
-      "link": "https://groq.com/",
+      "card_required": true,
+      "limits": "Up to 4 ARM cores + 24 GB RAM — genuinely huge",
+      "catch": "Card needed just to sign up (verification); popular regions often out of capacity",
+      "link": "https://www.oracle.com/cloud/free/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "AWS Free Tier",
+      "category": "hosting",
+      "verdict": "trial",
+      "card_required": true,
+      "limits": "Most offers last 12 months only; some services always-free",
+      "catch": "Card required; after 12 months you get billed unless you shut everything down",
+      "link": "https://aws.amazon.com/free/",
       "checked": "2026-11-13"
     },
     {
@@ -70,6 +89,66 @@
       "limits": "512 MB cluster, shared",
       "catch": "Shared cluster is slow; fine for learning",
       "link": "https://www.mongodb.com/cloud/atlas",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Neon",
+      "category": "database",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Serverless Postgres, ~0.5 GB storage, autosuspends",
+      "catch": "Cold-start delay after inactivity; compute hours capped monthly",
+      "link": "https://neon.com/pricing",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Upstash",
+      "category": "database",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Serverless Redis, 10k commands/day free",
+      "catch": "Per-command pricing means a popular app quietly exceeds the daily cap",
+      "link": "https://upstash.com/pricing",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Google AI Studio (Gemini API)",
+      "category": "ai",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Free tier with per-day request limits on Gemini models",
+      "catch": "Free tier data may be used by Google for improvement — don't send sensitive prompts",
+      "link": "https://aistudio.google.com/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Groq Cloud",
+      "category": "ai",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Free tier with rate limits, very fast LLMs",
+      "catch": "Rate limits hit hard on free tier; needs monitoring",
+      "link": "https://groq.com/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "OpenRouter",
+      "category": "ai",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Many models have ':free' variants with daily request caps",
+      "catch": "Free models get throttled and can disappear anytime; paid models need credits",
+      "link": "https://openrouter.ai/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Resend",
+      "category": "email",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "100 emails/day, 3,000/month, 1 custom domain",
+      "catch": "100/day sounds small but covers most hobby projects",
+      "link": "https://resend.com/pricing",
       "checked": "2026-11-13"
     }
   ]

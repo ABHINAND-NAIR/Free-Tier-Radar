@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Tier Radar — honest verdicts on "free" dev services</title>
+  <meta name="description" content="Which free tiers are actually free forever, which are trial bait, and which want your credit card. Honest verdicts, no sponsored links.">
+  <style>
+    :root {
+      --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3;
+      --muted: #8b949e; --green: #3fb950; --yellow: #d29922; --red: #f85149;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--text); font-family: -apple-system,
+      BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6; min-height: 100vh;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 24px 16px 60px; }
+    header { text-align: center; padding: 36px 0 28px; }
+    header h1 { font-size: 2rem; letter-spacing: -0.5px; }
+    header h1 span { color: var(--green); }
+    header p { color: var(--muted); max-width: 560px; margin: 10px auto 0; }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 24px 0 8px; }
+    .controls input[type="search"] {
+      flex: 1; min-width: 220px; padding: 10px 14px; font-size: 1rem;
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; outline: none;
+    }
+    .controls input[type="search"]:focus { border-color: var(--green); }
+    .chip {
+      padding: 8px 14px; font-size: 0.85rem; cursor: pointer; user-select: none;
+      background: var(--card); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 999px;
+    }
+    .chip.active { color: var(--bg); background: var(--text); border-color: var(--text); }
+    .count { color: var(--muted); font-size: 0.85rem; margin: 8px 0 16px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px; margin-bottom: 14px;
+      transition: border-color .15s;
+    }
+    .card:hover { border-color: var(--muted); }
+    .card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .card-top h2 { font-size: 1.1rem; }
+    .badge {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
+      padding: 3px 10px; border-radius: 999px; text-transform: uppercase;
+    }
+    .b-forever { color: var(--bg); background: var(--green); }
+    .b-trial   { color: var(--bg); background: var(--yellow); }
+    .b-trap    { color: var(--bg); background: var(--red); }
+    .card-cat { color: var(--muted); font-size: 0.8rem; margin-left: auto; }
+    .catch { margin-top: 8px; font-size: 0.95rem; }
+    .catch b { color: var(--muted); font-weight: 600; }
+    .meta { margin-top: 8px; font-size: 0.82rem; color: var(--muted); }
+    .meta .warn { color: var(--red); }
+    .meta a { color: var(--text); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+    .empty { text-align: center; color: var(--muted); padding: 40px 0; display: none; }
+    footer {
+      text-align: center; color: var(--muted); font-size: 0.82rem;
+      border-top: 1px solid var(--border); padding-top: 24px; margin-top: 40px;
+    }
+    .legend { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    @media (max-width: 560px) { header h1 { font-size: 1.5rem; } .card-cat { margin-left: 0; width: 100%; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>📡 Free Tier <span>Radar</span></h1>
+      <p>Honest verdicts on "free" developer services: what's really free forever,
+         what's trial bait, and what quietly wants your credit card.</p>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--green)"></i> free forever</span>
+        <span><i class="dot" style="background:var(--yellow)"></i> trial / expires</span>
+        <span><i class="dot" style="background:var(--red)"></i> card trap</span>
+      </div>
+    </header>
+
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search a service… (e.g. postgres, AI, hosting)">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="hosting">Hosting</button>
+      <button class="chip" data-filter="database">Databases</button>
+      <button class="chip" data-filter="ai">AI</button>
+      <button class="chip" data-filter="email">Email</button>
+    </div>
+    <div class="count" id="count"></div>
+    <div id="list"></div>
+    <div class="empty" id="empty">No services match that search. 🔍</div>
+
+    <footer>
+      Verdicts are researched by hand and include the date each was last checked.
+      Providers change terms without notice — always confirm on the official pricing page.<br>
+      Built as a learning project · No affiliate links · No sponsored rankings.
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const list = document.getElementById('list');
+    const count = document.getElementById('count');
+    const empty = document.getElementById('empty');
+    const search = document.getElementById('search');
+    let activeCat = 'all';
+
+    const badgeClass = { 'free-forever': 'b-forever', 'trial': 'b-trial', 'card-trap': 'b-trap', 'credit-based': 'b-trial' };
+    const badgeText  = { 'free-forever': 'Free forever', 'trial': 'Trial', 'card-trap': 'Card trap', 'credit-based': 'Credits' };
+
+    function render() {
+      const q = search.value.toLowerCase();
+      const items = SERVICES.filter(s =>
+        (activeCat === 'all' || s.category === activeCat) &&
+        (!q || (s.name + ' ' + s.category + ' ' + s.catch + ' ' + s.limits).toLowerCase().includes(q))
+      );
+      count.textContent = items.length + ' of ' + SERVICES.length + ' services shown';
+      empty.style.display = items.length ? 'none' : 'block';
+      list.innerHTML = items.map(s => `
+        <div class="card">
+          <div class="card-top">
+            <h2>${s.name}</h2>
+            <span class="badge ${badgeClass[s.verdict]}">${badgeText[s.verdict]}</span>
+            ${s.card_required ? '<span class="badge b-trap" title="Needs a credit card to sign up">💳 card</span>' : ''}
+            <span class="card-cat">${s.category}</span>
+          </div>
+          <div class="catch"><b>What you get:</b> ${s.limits}</div>
+          <div class="catch"><b>The catch:</b> ${s.catch}</div>
+          <div class="meta">
+            checked ${s.checked} · <a href="${s.link}" target="_blank" rel="noopener">official pricing ↗</a>
+          </div>
+        </div>`).join('');
+    }
+
+    search.addEventListener('input', render);
+    document.querySelectorAll('.chip').forEach(c =>
+      c.addEventListener('click', () => {
+        document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        activeCat = c.dataset.filter;
+        render();
+      })
+    );
+    render();
+  </script>
+</body>
+</html>

@@ -19,7 +19,7 @@ teaches real engineering, and becomes the Google-portfolio flagship.
 
 ## Phase 1 — Core radar (this week)
 - [x] Step 0: Project folder, plan, data schema, first seed data (done tonight)
-- [ ] Step 1: Curate 12–15 services into `data/services.json` with honest verdicts
+- [x] Step 1: Curate 12–15 services into `data/services.json` with honest verdicts
       (use free-for.dev list as source; verify each provider's real pricing page)
 - [ ] Step 2: Build the site — list view, verdict badges (FOREVER / TRIAL / CARD-TRAP),
       search box, category filter. Plain HTML/CSS/JS. No frameworks yet.
