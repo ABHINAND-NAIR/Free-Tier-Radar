@@ -3,128 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Tier Radar — honest verdicts on "free" dev services</title>
-  <meta name="description" content="Which free tiers are actually free forever, which are trial bait, and which want your credit card. Honest verdicts, no sponsored links.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%230d1117'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%2330363d' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='15' fill='none' stroke='%2330363d' stroke-width='3'/%3E%3Cline x1='50' y1='50' x2='85' y2='25' stroke='%233fb950' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='38' r='5' fill='%233fb950'/%3E%3C/svg%3E">
+  <title>Free Tier Radar — we read the fine print so you don't have to</title>
+  <meta name="description" content="Which 'free tier' offers are actually free forever, which expire, and which want your credit card. Read the fine print once, here.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fffdf4'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='%23111' stroke-width='4'/%3E%3Cline x1='50' y1='50' x2='80' y2='28' stroke='%23e6000f' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='66' cy='40' r='7' fill='%23e6000f'/%3E%3C/svg%3E">
   <style>
     :root {
-      --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3;
-      --muted: #8b949e; --green: #3fb950; --yellow: #d29922; --red: #f85149;
+      --paper: #fffdf4;
+      --ink: #14120e;
+      --faint: #6b675e;
+      --line: #14120e;
+      --marker: #ffe600;      /* highlighter */
+      --alarm: #e6000f;       /* stamp red */
+      --mono: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+      --serif: Georgia, "Times New Roman", serif;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: var(--bg); color: var(--text); font-family: -apple-system,
-      BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.6; min-height: 100vh;
+      background: var(--paper); color: var(--ink);
+      font-family: var(--serif); line-height: 1.55;
     }
-    .wrap { max-width: 880px; margin: 0 auto; padding: 24px 16px 60px; }
-    header { text-align: center; padding: 36px 0 28px; }
-    header h1 { font-size: 2rem; letter-spacing: -0.5px; }
-    header h1 span { color: var(--green); }
-    header p { color: var(--muted); max-width: 560px; margin: 10px auto 0; }
-    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 24px 0 8px; }
-    .controls input[type="search"] {
-      flex: 1; min-width: 220px; padding: 10px 14px; font-size: 1rem;
-      background: var(--card); color: var(--text);
-      border: 1px solid var(--border); border-radius: 8px; outline: none;
+    .wrap { max-width: 860px; margin: 0 auto; padding: 20px 18px 70px; }
+
+    /* ---------- masthead, like a newsletter head ---------- */
+    .kicker {
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--faint);
+      display: flex; justify-content: space-between; border-bottom: 2px solid var(--line);
+      padding-bottom: 6px;
     }
-    .controls input[type="search"]:focus { border-color: var(--green); }
-    .chip {
-      padding: 8px 14px; font-size: 0.85rem; cursor: pointer; user-select: none;
-      background: var(--card); color: var(--muted);
-      border: 1px solid var(--border); border-radius: 999px;
+    h1 {
+      font-family: var(--mono); font-weight: 800;
+      font-size: clamp(2.4rem, 8vw, 4.2rem); line-height: 0.95;
+      letter-spacing: -0.03em; margin: 18px 0 6px;
     }
-    .chip.active { color: var(--bg); background: var(--text); border-color: var(--text); }
-    .count { color: var(--muted); font-size: 0.85rem; margin: 8px 0 16px; }
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 18px 20px; margin-bottom: 14px;
-      transition: border-color .15s;
+    h1 .red { color: var(--alarm); }
+    .standfirst {
+      font-size: 1.05rem; font-style: italic; max-width: 560px; color: var(--ink);
+      margin-bottom: 4px;
     }
-    .card:hover { border-color: var(--muted); }
-    .card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .card-top h2 { font-size: 1.1rem; }
-    .badge {
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
-      padding: 3px 10px; border-radius: 999px; text-transform: uppercase;
+    .standfirst mark { background: var(--marker); padding: 0 3px; font-style: normal; }
+    .byline {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--faint);
+      margin: 10px 0 26px;
     }
-    .b-forever { color: var(--bg); background: var(--green); }
-    .b-trial   { color: var(--bg); background: var(--yellow); }
-    .b-trap    { color: var(--bg); background: var(--red); }
-    .card-cat { color: var(--muted); font-size: 0.8rem; margin-left: auto; }
-    .catch { margin-top: 8px; font-size: 0.95rem; }
-    .catch b { color: var(--muted); font-weight: 600; }
-    .meta { margin-top: 8px; font-size: 0.82rem; color: var(--muted); }
-    .meta .warn { color: var(--red); }
-    .meta a { color: var(--text); text-decoration: none; border-bottom: 1px dotted var(--muted); }
-    .empty { text-align: center; color: var(--muted); padding: 40px 0; display: none; }
+
+    /* ---------- controls: flat, underline, not chips ---------- */
+    .controls { display: flex; gap: 0; flex-wrap: wrap; align-items: stretch; border-top: 1px solid var(--line); }
+    #search {
+      flex: 1 1 240px; padding: 10px 4px; font-family: var(--mono); font-size: 0.9rem;
+      background: transparent; border: none; border-bottom: 1px solid var(--line); outline: none;
+    }
+    #search::placeholder { color: var(--faint); }
+    .tab {
+      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em;
+      background: none; border: none; border-bottom: 1px solid var(--line);
+      padding: 10px 12px; cursor: pointer; color: var(--faint); text-transform: uppercase;
+    }
+    .tab[aria-pressed="true"] { color: var(--ink); box-shadow: inset 0 -3px 0 var(--marker); font-weight: 700; }
+    .tally { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); margin: 8px 0 0; }
+
+    /* ---------- the register: rows, not cards ---------- */
+    .row {
+      border-bottom: 1px solid var(--line);
+      padding: 14px 2px 12px;
+      display: grid; grid-template-columns: 1fr auto; gap: 4px 14px;
+      align-items: baseline;
+    }
+    .row:first-of-type { border-top: 2px solid var(--line); margin-top: 12px; }
+    .svc { font-weight: 700; font-size: 1.06rem; }
+    .svc a { color: var(--ink); text-decoration: none; }
+    .svc a:hover { background: var(--marker); }
+    .svc .cat { font-family: var(--mono); font-size: 0.66rem; color: var(--faint); letter-spacing: 0.1em; text-transform: uppercase; margin-left: 8px; }
+
+    .stamp {
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; border: 2px solid currentColor; padding: 2px 8px 1px;
+      transform: rotate(-2deg); white-space: nowrap;
+      justify-self: end;
+    }
+    .st-forever { color: #0a7a1f; }
+    .st-trial   { color: #b97500; transform: rotate(1.5deg); }
+    .st-trap    { color: var(--alarm); }
+    .st-card    { color: var(--faint); border-style: dashed; font-size: 0.62rem; transform: rotate(2deg); }
+
+    .gets, .catch { font-size: 0.92rem; grid-column: 1 / -1; }
+    .gets::before  { content: "you get: "; font-family: var(--mono); font-size: 0.7rem; color: var(--faint); letter-spacing: 0.08em; text-transform: uppercase; }
+    .catch::before { content: "the catch: "; font-family: var(--mono); font-size: 0.7rem; color: var(--alarm); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; }
+    .catch mark { background: var(--marker); padding: 0 2px; }
+    .meta { grid-column: 1 / -1; font-family: var(--mono); font-size: 0.68rem; color: var(--faint); }
+    .meta a { color: inherit; }
+
+    .empty {
+      font-family: var(--mono); font-size: 0.85rem; color: var(--faint);
+      padding: 28px 0; display: none; border-bottom: 1px solid var(--line);
+    }
+    .empty button {
+      font-family: var(--mono); background: var(--marker); border: 1px solid var(--ink);
+      padding: 3px 10px; cursor: pointer; font-size: 0.8rem;
+    }
+
+    /* ---------- methodology ---------- */
+    .how { margin-top: 40px; border: 2px solid var(--line); padding: 18px 20px 16px; position: relative; }
+    .how::before {
+      content: "METHODOLOGY"; position: absolute; top: -10px; left: 14px;
+      background: var(--paper); padding: 0 8px;
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+    }
+    .how dl { font-size: 0.92rem; }
+    .how dt { font-family: var(--mono); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 10px; }
+    .how dd { margin: 2px 0 0; }
+    .how .note { font-style: italic; color: var(--faint); font-size: 0.85rem; margin-top: 14px; }
+
     footer {
-      text-align: center; color: var(--muted); font-size: 0.82rem;
-      border-top: 1px solid var(--border); padding-top: 24px; margin-top: 40px;
+      margin-top: 40px; border-top: 2px solid var(--line); padding-top: 12px;
+      font-family: var(--mono); font-size: 0.72rem; color: var(--faint);
+      display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
     }
-    .legend { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
-    .legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
-    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-    @media (max-width: 560px) { header h1 { font-size: 1.5rem; } .card-cat { margin-left: 0; width: 100%; } }
-    .how { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 32px; }
-    .how h3 { margin-bottom: 10px; }
-    .how ul { margin: 0 0 12px 20px; }
-    .how p { color: var(--muted); font-size: 0.88rem; }
+
+    @media (max-width: 560px) {
+      .row { grid-template-columns: 1fr; }
+      .stamp { justify-self: start; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <svg width="64" height="64" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--border)" stroke-width="3"/>
-        <circle cx="50" cy="50" r="30" fill="none" stroke="var(--border)" stroke-width="3"/>
-        <circle cx="50" cy="50" r="15" fill="none" stroke="var(--border)" stroke-width="3"/>
-        <line x1="50" y1="50" x2="85" y2="25" stroke="var(--green)" stroke-width="5" stroke-linecap="round">
-          <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="4s" repeatCount="indefinite"/>
-        </line>
-        <circle cx="68" cy="38" r="5" fill="var(--green)">
-          <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite"/>
-        </circle>
-      </svg>
-      <h1>Free Tier <span>Radar</span></h1>
-      <p>Honest verdicts on "free" developer services: what's really free forever,
-         what's trial bait, and what quietly wants your credit card.</p>
-      <div class="legend">
-        <span><i class="dot" style="background:var(--green)"></i> free forever</span>
-        <span><i class="dot" style="background:var(--yellow)"></i> trial / expires</span>
-        <span><i class="dot" style="background:var(--red)"></i> card trap</span>
-      </div>
-    </header>
+    <div class="kicker"><span>issue nº1</span><span id="masthead-date"></span></div>
+    <h1>FREE TIER<br><span class="red">RADAR</span></h1>
+    <p class="standfirst">Every "free" developer service ships with <mark>fine print</mark>.
+       We read it once, so you don't get the surprise bill.</p>
+    <p class="byline">no sponsors · no affiliate links · verdicts checked <span id="byline-date"></span></p>
 
     <div class="controls">
-      <input id="search" type="search" placeholder="Search a service… (e.g. postgres, AI, hosting)">
-      <button class="chip active" data-filter="all">All</button>
-      <button class="chip" data-filter="hosting">Hosting</button>
-      <button class="chip" data-filter="database">Databases</button>
-      <button class="chip" data-filter="ai">AI</button>
-      <button class="chip" data-filter="email">Email</button>
+      <input id="search" type="search" placeholder='search…  ( press "/" )' autocomplete="off">
+      <button class="tab" data-filter="all" aria-pressed="true">All</button>
+      <button class="tab" data-filter="hosting" aria-pressed="false">Hosting</button>
+      <button class="tab" data-filter="database" aria-pressed="false">Databases</button>
+      <button class="tab" data-filter="ai" aria-pressed="false">AI</button>
+      <button class="tab" data-filter="email" aria-pressed="false">Email</button>
     </div>
-    <div class="count" id="count"></div>
-    <div id="list"></div>
-    <div class="empty" id="empty">No services match that search. 🔍 <button class="chip" onclick="document.getElementById('search').value='';render()">Clear search</button></div>
+    <p class="tally" id="count"></p>
 
-    <section class="how" id="how">
-      <h3>How we judge</h3>
-      <ul>
-        <li><b style="color:var(--green)">Free forever</b> — usable indefinitely on the free plan without paying. Limits exist, but they never expire.</li>
-        <li><b style="color:var(--yellow)">Trial</b> — generous at first, but the free period ends (e.g. 12 months) and billing starts unless you act.</li>
-        <li><b style="color:var(--red)">Card trap</b> — demands a credit card for a "free" tier. Crossing a limit can bill you automatically.</li>
-        <li><b>💳 card</b> badge — the free tier is genuine but a card is required just to sign up (verification).</li>
-      </ul>
-      <p>No affiliate links. No sponsored placements. Every entry shows the date it was
-         last checked — providers change terms without notice, so always confirm on the
-         official pricing page before committing a project to a service.</p>
+    <div id="list"></div>
+    <div class="empty" id="empty">
+      nothing on the radar matches that. <button onclick="document.getElementById('search').value='';render()">reset</button>
+    </div>
+
+    <section class="how">
+      <dl>
+        <dt style="color:#0a7a1f">free forever</dt>
+        <dd>Usable indefinitely without paying. Limits exist, but they never expire.</dd>
+        <dt style="color:#b97500">trial</dt>
+        <dd>Generous — until the clock runs out (often 12 months) and billing starts unless you act.</dd>
+        <dt style="color:var(--alarm)">card trap</dt>
+        <dd>Wants a credit card for a "free" tier. Cross the limit and the charge is automatic.</dd>
+        <dt style="color:var(--faint)">card req.</dt>
+        <dd>The free tier is genuine, but a card is demanded just to walk in the door (verification).</dd>
+      </dl>
+      <p class="note">Providers change their terms without telling anyone. Every verdict above carries
+         the date it was last checked — always confirm on the official pricing page before you commit a real project.</p>
     </section>
 
     <footer>
-      Verdicts are researched by hand and include the date each was last checked.
-      Providers change terms without notice — always confirm on the official pricing page.<br>
-      Built as a learning project · No affiliate links · No sponsored rankings.
+      <span>free tier radar · built by Abhi</span>
+      <span>report a wrong verdict — it'll be fixed same day</span>
     </footer>
   </div>
 
@@ -136,8 +178,8 @@
     const search = document.getElementById('search');
     let activeCat = 'all';
 
-    const badgeClass = { 'free-forever': 'b-forever', 'trial': 'b-trial', 'card-trap': 'b-trap', 'credit-based': 'b-trial' };
-    const badgeText  = { 'free-forever': 'Free forever', 'trial': 'Trial', 'card-trap': 'Card trap', 'credit-based': 'Credits' };
+    const stampClass = { 'free-forever': 'st-forever', 'trial': 'st-trial', 'card-trap': 'st-trap', 'credit-based': 'st-trial' };
+    const stampText  = { 'free-forever': 'free forever', 'trial': 'trial', 'card-trap': 'card trap', 'credit-based': 'credits' };
 
     function render() {
       const q = search.value.toLowerCase();
@@ -145,21 +187,16 @@
         (activeCat === 'all' || s.category === activeCat) &&
         (!q || (s.name + ' ' + s.category + ' ' + s.catch + ' ' + s.limits).toLowerCase().includes(q))
       );
-      count.textContent = items.length + ' of ' + SERVICES.length + ' services shown';
+      count.textContent = items.length + ' / ' + SERVICES.length + ' services on the radar';
       empty.style.display = items.length ? 'none' : 'block';
       list.innerHTML = items.map(s => `
-        <div class="card">
-          <div class="card-top">
-            <h2>${s.name}</h2>
-            <span class="badge ${badgeClass[s.verdict]}">${badgeText[s.verdict]}</span>
-            ${s.card_required ? '<span class="badge b-trap" title="Needs a credit card to sign up">💳 card</span>' : ''}
-            <span class="card-cat">${s.category}</span>
-          </div>
-          <div class="catch"><b>What you get:</b> ${s.limits}</div>
-          <div class="catch"><b>The catch:</b> ${s.catch}</div>
-          <div class="meta">
-            checked ${s.checked} · <a href="${s.link}" target="_blank" rel="noopener">official pricing ↗</a>
-          </div>
+        <div class="row">
+          <div class="svc"><a href="${s.link}" target="_blank" rel="noopener">${s.name}</a><span class="cat">${s.category}</span></div>
+          <div class="stamp ${stampClass[s.verdict]}">${stampText[s.verdict]}</div>
+          ${s.card_required ? '<div class="stamp st-card">card req.</div>' : ''}
+          <div class="gets">${s.limits}</div>
+          <div class="catch"><mark>${s.catch}</mark></div>
+          <div class="meta">checked ${s.checked} · <a href="${s.link}" target="_blank" rel="noopener">official pricing ↗</a></div>
         </div>`).join('');
     }
 
@@ -167,21 +204,19 @@
     document.addEventListener('keydown', e => {
       if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search.focus(); }
     });
-    const lastChecked = Math.max(...SERVICES.map(s => new Date(s.checked)));
-    const updated = document.createElement('div');
-    updated.className = 'count';
-    updated.style.textAlign = 'center';
-    updated.style.margin = '16px 0 0';
-    updated.textContent = 'Data last checked: ' + new Date(lastChecked).toDateString().slice(4) + ' · press "/" to search';
-    document.querySelector('.wrap').insertBefore(updated, document.querySelector('.controls'));
-    document.querySelectorAll('.chip').forEach(c =>
+    document.querySelectorAll('.tab').forEach(c =>
       c.addEventListener('click', () => {
-        document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
-        c.classList.add('active');
+        document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', 'false'));
+        c.setAttribute('aria-pressed', 'true');
         activeCat = c.dataset.filter;
         render();
       })
     );
+
+    const lastChecked = Math.max(...SERVICES.map(s => new Date(s.checked).getTime()));
+    const nice = new Date(lastChecked).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    document.getElementById('masthead-date').textContent = nice;
+    document.getElementById('byline-date').textContent = nice;
     render();
   </script>
 </body>
