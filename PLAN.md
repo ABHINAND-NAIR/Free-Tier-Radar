@@ -24,13 +24,28 @@ teaches real engineering, and becomes the Google-portfolio flagship.
 - [x] Step 2: Build the site — list view, verdict badges (FOREVER / TRIAL / CARD-TRAP),
       search box, category filter. Plain HTML/CSS/JS. No frameworks yet.
 - [x] Step 3: Polish — mobile-friendly, clean design, "how we judge" page
+      (superseded: full editorial redesign + color pass + depth pass + about page + FAQ)
 - [ ] Step 4: Push to GitHub, deploy on GitHub Pages, get the live link
+      ⚠️ BLOCKED Nov 13: GitHub flagged the laptop's network IP (bot-activity block, ID 8c25bf1f...),
+      hits the normal browser too. Resume options: (a) phone hotspot trick → normal browser upload,
+      (b) wait ~1 hr for cooldown, (c) Netlify Drop (sign in with Google, drag folder) then mirror
+      to GitHub later. Files ready in this folder: index.html, about.html, data.js, data/services.json.
+      Upload tip: drag the FILES (open data folder for services.json), repo must be Public, no README.
 - [ ] Step 5: Share it in 2–3 places (X, a Discord, a subreddit). Collect reactions.
 
 ## Phase 2 — AI layer (next week)
-- [ ] Step 6: "Paste a pricing page URL → AI flags the traps" feature
+- [ ] Step 6: Run OFFICE-HOURS.md interrogation FIRST (what exactly should the AI check?
+      which provider's API? free tier limits? what does the user paste?) → write DESIGN.md
+- [ ] Step 7: "Paste a pricing page URL → AI flags the traps" feature
       (uses a free AI provider API; Jarvis wires the key with Abhi)
-- [ ] Step 7: Open-source polish: README, LICENSE, CONTRIBUTING, good first issues
+- [ ] Step 8: Open-source polish: README, LICENSE, CONTRIBUTING, good first issues
+- [ ] Security gate for the AI feature (Abhi's checklist, applied at the right time):
+      API key ONLY in serverless env var (never in git, never client-side) · rate limiting
+      on the API route · CORS locked to the site's own origin · security headers
+      (CSP, X-Content-Type-Options, Referrer-Policy) · input sanitization on the pasted-URL field ·
+      no debug output in production · least-privilege anything-with-a-key.
+      (N/A for this project, by design: no DB, no passwords, no admin routes, no user accounts —
+      static site = minimal attack surface. XSS shield already live on the front end, Nov 14.)
 
 ## Tech choices
 - Static HTML/CSS/JS first (ship fast, learn real fundamentals)

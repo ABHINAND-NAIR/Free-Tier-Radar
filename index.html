@@ -260,6 +260,20 @@
     const stampClass = { 'free-forever': 'st-forever', 'trial': 'st-trial', 'card-trap': 'st-trap', 'credit-based': 'st-trial' };
     const stampText  = { 'free-forever': 'free forever', 'trial': 'trial', 'card-trap': 'card trap', 'credit-based': 'credits' };
 
+    // XSS shield: escape every data field before it touches HTML.
+    // Our own JSON is trusted today; community submissions tomorrow won't be.
+    function esc(v) {
+      return String(v ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+    function escUrl(u) {
+      // only allow http(s) links in href — blocks javascript: injection
+      try { const url = new URL(u, location.href);
+        return /^https?:$/.test(url.protocol) ? esc(url.href) : '#';
+      } catch { return '#'; }
+    }
+
     function render() {
       const q = search.value.toLowerCase();
       const items = SERVICES.filter(s =>
@@ -269,17 +283,17 @@
       count.textContent = items.length + ' / ' + SERVICES.length + ' services on the radar';
       empty.style.display = items.length ? 'none' : 'block';
       list.innerHTML = items.map(s => `
-        <div class="row r-${s.verdict === 'free-forever' ? 'forever' : s.verdict === 'trial' || s.verdict === 'credit-based' ? 'trial' : 'trap'}">
-          <div class="svc"><a href="${s.link}" target="_blank" rel="noopener">${s.name}</a><span class="cat cat-${s.category}">${s.category}</span></div>
-          <div class="stamp ${stampClass[s.verdict]}">${stampText[s.verdict]}</div>
+        <div class="row r-${esc(s.verdict === 'free-forever' ? 'forever' : s.verdict === 'trial' || s.verdict === 'credit-based' ? 'trial' : 'trap')}">
+          <div class="svc"><a href="${escUrl(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a><span class="cat cat-${esc(s.category)}">${esc(s.category)}</span></div>
+          <div class="stamp ${stampClass[s.verdict] || 'st-trial'}">${stampText[s.verdict] || esc(s.verdict)}</div>
           ${s.card_required ? '<div class="stamp st-card">card req.</div>' : ''}
-          <div class="gets">${s.limits}</div>
-          <div class="catch"><mark>${s.catch}</mark></div>
-          <div class="meta">checked ${s.checked} · <a href="${s.link}" target="_blank" rel="noopener">official pricing ↗</a></div>
+          <div class="gets">${esc(s.limits)}</div>
+          <div class="catch"><mark>${esc(s.catch)}</mark></div>
+          <div class="meta">checked ${esc(s.checked)} · <a href="${escUrl(s.link)}" target="_blank" rel="noopener noreferrer">official pricing ↗</a></div>
           <div class="more">
-            <p><b>best for</b> ${s.bestfor}</p>
-            <p><b>risk of outgrowing it</b> <span class="risk-${s.risk}">${s.risk}</span></p>
-            <p><b>if it fails you</b> ${s.alt}</p>
+            <p><b>best for</b> ${esc(s.bestfor)}</p>
+            <p><b>risk of outgrowing it</b> <span class="risk-${esc(s.risk)}">${esc(s.risk)}</span></p>
+            <p><b>if it fails you</b> ${esc(s.alt)}</p>
           </div>
         </div>`).join('');
     }
