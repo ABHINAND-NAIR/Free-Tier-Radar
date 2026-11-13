@@ -21,7 +21,7 @@ teaches real engineering, and becomes the Google-portfolio flagship.
 - [x] Step 0: Project folder, plan, data schema, first seed data (done tonight)
 - [x] Step 1: Curate 12–15 services into `data/services.json` with honest verdicts
       (use free-for.dev list as source; verify each provider's real pricing page)
-- [ ] Step 2: Build the site — list view, verdict badges (FOREVER / TRIAL / CARD-TRAP),
+- [x] Step 2: Build the site — list view, verdict badges (FOREVER / TRIAL / CARD-TRAP),
       search box, category filter. Plain HTML/CSS/JS. No frameworks yet.
 - [ ] Step 3: Polish — mobile-friendly, clean design, "how we judge" page
 - [ ] Step 4: Push to GitHub, deploy on GitHub Pages, get the live link
