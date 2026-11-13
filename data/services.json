@@ -1,0 +1,76 @@
+{
+  "$schema": "./schema.md",
+  "description": "One entry per service. verdict must be: free-forever | trial | card-trap | credit-based",
+  "services": [
+    {
+      "name": "Cloudflare Pages",
+      "category": "hosting",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Unlimited bandwidth, 500 builds/month",
+      "catch": "Builds pause at 500/month — fine for hobby projects",
+      "link": "https://pages.cloudflare.com/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "GitHub Pages",
+      "category": "hosting",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "1 GB site, 100 GB/month bandwidth, static only",
+      "catch": "Static sites only — no server code",
+      "link": "https://pages.github.com/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Vercel Hobby",
+      "category": "hosting",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "100 GB bandwidth/month, serverless functions",
+      "catch": "Commercial use technically not allowed on Hobby plan",
+      "link": "https://vercel.com/pricing",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Render",
+      "category": "hosting",
+      "verdict": "card-trap",
+      "card_required": true,
+      "limits": "Free web service spins down after 15 min idle",
+      "catch": "Card required upfront; cold starts make it feel broken",
+      "link": "https://render.com/pricing",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Groq Cloud",
+      "category": "ai",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "Free tier with rate limits, very fast LLMs",
+      "catch": "Rate limits hit hard on free tier; needs monitoring",
+      "link": "https://groq.com/",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "Supabase",
+      "category": "database",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "2 projects, 500 MB database, pauses after 1 week inactivity",
+      "catch": "Project pauses if unused for 7 days — click to restore",
+      "link": "https://supabase.com/pricing",
+      "checked": "2026-11-13"
+    },
+    {
+      "name": "MongoDB Atlas",
+      "category": "database",
+      "verdict": "free-forever",
+      "card_required": false,
+      "limits": "512 MB cluster, shared",
+      "catch": "Shared cluster is slow; fine for learning",
+      "link": "https://www.mongodb.com/cloud/atlas",
+      "checked": "2026-11-13"
+    }
+  ]
+}
