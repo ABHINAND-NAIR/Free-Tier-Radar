@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Tier Radar — honest verdicts on "free" dev services</title>
   <meta name="description" content="Which free tiers are actually free forever, which are trial bait, and which want your credit card. Honest verdicts, no sponsored links.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%230d1117'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%2330363d' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='15' fill='none' stroke='%2330363d' stroke-width='3'/%3E%3Cline x1='50' y1='50' x2='85' y2='25' stroke='%233fb950' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='38' r='5' fill='%233fb950'/%3E%3C/svg%3E">
   <style>
     :root {
       --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3;
@@ -65,12 +66,27 @@
     .legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
     .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
     @media (max-width: 560px) { header h1 { font-size: 1.5rem; } .card-cat { margin-left: 0; width: 100%; } }
+    .how { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 32px; }
+    .how h3 { margin-bottom: 10px; }
+    .how ul { margin: 0 0 12px 20px; }
+    .how p { color: var(--muted); font-size: 0.88rem; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>📡 Free Tier <span>Radar</span></h1>
+      <svg width="64" height="64" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="var(--border)" stroke-width="3"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="var(--border)" stroke-width="3"/>
+        <circle cx="50" cy="50" r="15" fill="none" stroke="var(--border)" stroke-width="3"/>
+        <line x1="50" y1="50" x2="85" y2="25" stroke="var(--green)" stroke-width="5" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="4s" repeatCount="indefinite"/>
+        </line>
+        <circle cx="68" cy="38" r="5" fill="var(--green)">
+          <animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      <h1>Free Tier <span>Radar</span></h1>
       <p>Honest verdicts on "free" developer services: what's really free forever,
          what's trial bait, and what quietly wants your credit card.</p>
       <div class="legend">
@@ -90,7 +106,20 @@
     </div>
     <div class="count" id="count"></div>
     <div id="list"></div>
-    <div class="empty" id="empty">No services match that search. 🔍</div>
+    <div class="empty" id="empty">No services match that search. 🔍 <button class="chip" onclick="document.getElementById('search').value='';render()">Clear search</button></div>
+
+    <section class="how" id="how">
+      <h3>How we judge</h3>
+      <ul>
+        <li><b style="color:var(--green)">Free forever</b> — usable indefinitely on the free plan without paying. Limits exist, but they never expire.</li>
+        <li><b style="color:var(--yellow)">Trial</b> — generous at first, but the free period ends (e.g. 12 months) and billing starts unless you act.</li>
+        <li><b style="color:var(--red)">Card trap</b> — demands a credit card for a "free" tier. Crossing a limit can bill you automatically.</li>
+        <li><b>💳 card</b> badge — the free tier is genuine but a card is required just to sign up (verification).</li>
+      </ul>
+      <p>No affiliate links. No sponsored placements. Every entry shows the date it was
+         last checked — providers change terms without notice, so always confirm on the
+         official pricing page before committing a project to a service.</p>
+    </section>
 
     <footer>
       Verdicts are researched by hand and include the date each was last checked.
@@ -135,6 +164,16 @@
     }
 
     search.addEventListener('input', render);
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search.focus(); }
+    });
+    const lastChecked = Math.max(...SERVICES.map(s => new Date(s.checked)));
+    const updated = document.createElement('div');
+    updated.className = 'count';
+    updated.style.textAlign = 'center';
+    updated.style.margin = '16px 0 0';
+    updated.textContent = 'Data last checked: ' + new Date(lastChecked).toDateString().slice(4) + ' · press "/" to search';
+    document.querySelector('.wrap').insertBefore(updated, document.querySelector('.controls'));
     document.querySelectorAll('.chip').forEach(c =>
       c.addEventListener('click', () => {
         document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));

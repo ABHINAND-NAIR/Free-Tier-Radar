@@ -23,7 +23,7 @@ teaches real engineering, and becomes the Google-portfolio flagship.
       (use free-for.dev list as source; verify each provider's real pricing page)
 - [x] Step 2: Build the site — list view, verdict badges (FOREVER / TRIAL / CARD-TRAP),
       search box, category filter. Plain HTML/CSS/JS. No frameworks yet.
-- [ ] Step 3: Polish — mobile-friendly, clean design, "how we judge" page
+- [x] Step 3: Polish — mobile-friendly, clean design, "how we judge" page
 - [ ] Step 4: Push to GitHub, deploy on GitHub Pages, get the live link
 - [ ] Step 5: Share it in 2–3 places (X, a Discord, a subreddit). Collect reactions.
 
