@@ -84,6 +84,28 @@
     .row.r-trap    { border-left-color: var(--alarm); background: #fdeceb; }
     .row.r-plain   { background: transparent; }
     .row:hover { background: #fff9c9; }
+    .stats {
+      display: flex; gap: 0; flex-wrap: wrap; border: 2px solid var(--line);
+      margin-top: 18px; font-family: var(--mono);
+    }
+    .stat { flex: 1 1 110px; padding: 10px 12px; border-right: 1px solid var(--line); text-align: center; }
+    .stat:last-child { border-right: none; }
+    .stat b { display: block; font-size: 1.3rem; }
+    .stat span { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+    .more { grid-column: 1 / -1; display: none; border-top: 1px dashed var(--line); margin-top: 6px; padding-top: 8px; }
+    .row.open .more { display: grid; grid-template-columns: 1fr; gap: 4px; }
+    .more p { font-size: 0.9rem; margin: 0; }
+    .more b { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-right: 6px; }
+    .risk-low { color: #0a7a1f; font-weight: 700; }
+    .risk-medium { color: #b97500; font-weight: 700; }
+    .risk-high { color: var(--alarm); font-weight: 700; }
+    .hint { font-family: var(--mono); font-size: 0.68rem; color: var(--faint); margin-top: 2px; }
+    .faq { margin-top: 40px; }
+    .faq h3 { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 2px solid var(--line); padding-bottom: 6px; }
+    .faq details { border-bottom: 1px solid var(--line); padding: 10px 2px; }
+    .faq summary { cursor: pointer; font-weight: 700; font-size: 0.98rem; }
+    .faq details p { margin-top: 6px; font-size: 0.92rem; color: var(--ink); }
+    .faq a { color: var(--alarm); }
     .row:first-of-type { border-top: 2px solid var(--line); margin-top: 12px; }
     .svc { font-weight: 700; font-size: 1.06rem; }
     .svc a { color: var(--ink); text-decoration: none; }
@@ -153,6 +175,8 @@
        We read it once, so you don't get the surprise bill.</p>
     <p class="byline">no sponsors · no affiliate links · verdicts checked <span id="byline-date"></span></p>
 
+    <div class="stats" id="stats"></div>
+
     <div class="controls">
       <input id="search" type="search" placeholder='search…  ( press "/" )' autocomplete="off">
       <button class="tab" data-filter="all" aria-pressed="true">All</button>
@@ -183,8 +207,43 @@
          the date it was last checked — always confirm on the official pricing page before you commit a real project.</p>
     </section>
 
+    <section class="faq">
+      <h3>Questions people actually ask</h3>
+      <details>
+        <summary>How do you verify a verdict?</summary>
+        <p>By reading the provider's own pricing page and terms — not blog posts, not affiliate roundups.
+           Anything we can't confirm doesn't get a verdict. Each entry shows the exact date it was last checked.</p>
+      </details>
+      <details>
+        <summary>Do you take sponsorships or affiliate links?</summary>
+        <p>No. The moment this page gets paid to rank a service, it stops being a radar and becomes an ad.
+           Every link here points to the provider's official pricing so you can check us.</p>
+      </details>
+      <details>
+        <summary>A service changed its terms — what do I do?</summary>
+        <p>Tell us and it gets re-checked and re-stamped the same day. Wrong verdicts are the worst thing
+           this page can publish, so they get fixed first.</p>
+      </details>
+      <details>
+        <summary>Can I use these free tiers for my startup?</summary>
+        <p>For experiments and prototypes — yes. For anything with real users, read the catch column first.
+           Several free tiers (Vercel Hobby, for example) forbid commercial use outright. The radar exists
+           so you find that out before the product does.</p>
+      </details>
+      <details>
+        <summary>Why isn't there a rating score?</summary>
+        <p>Because a single number hides the only thing that matters: <em>how</em> a free tier fails you.
+           A trial and a card trap can both score 7/10 — but only one of them bills you in your sleep.</p>
+      </details>
+      <details>
+        <summary>Who is behind this?</summary>
+        <p>One 18-year-old who kept getting burned by "free" tiers and decided to read the fine print
+           on everyone's behalf. The full story is on the <a href="about.html">about page</a>.</p>
+      </details>
+    </section>
+
     <footer>
-      <span>free tier radar · built by Abhi</span>
+      <span>free tier radar · built by Abhi · <a href="about.html" style="color:var(--alarm)">the story →</a></span>
       <span>report a wrong verdict — it'll be fixed same day</span>
     </footer>
   </div>
@@ -216,6 +275,11 @@
           <div class="gets">${s.limits}</div>
           <div class="catch"><mark>${s.catch}</mark></div>
           <div class="meta">checked ${s.checked} · <a href="${s.link}" target="_blank" rel="noopener">official pricing ↗</a></div>
+          <div class="more">
+            <p><b>best for</b> ${s.bestfor}</p>
+            <p><b>risk of outgrowing it</b> <span class="risk-${s.risk}">${s.risk}</span></p>
+            <p><b>if it fails you</b> ${s.alt}</p>
+          </div>
         </div>`).join('');
     }
 
@@ -236,6 +300,28 @@
     const nice = new Date(lastChecked).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
     document.getElementById('masthead-date').textContent = nice;
     document.getElementById('byline-date').textContent = nice;
+
+    // stats strip
+    const stats = document.getElementById('stats');
+    const traps = SERVICES.filter(s => s.verdict === 'card-trap').length;
+    const trials = SERVICES.filter(s => s.verdict === 'trial' || s.verdict === 'credit-based').length;
+    const noCard = SERVICES.filter(s => !s.card_required).length;
+    const cats = new Set(SERVICES.map(s => s.category)).size;
+    stats.innerHTML = [
+      [SERVICES.length, 'services judged'],
+      [cats, 'categories'],
+      [traps + ' / ' + trials, 'card traps / trials'],
+      [noCard, 'need no card'],
+      [SERVICES.filter(s => s.verdict === 'free-forever').length, 'free forever']
+    ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+
+    // expandable rows (click anywhere except links)
+    list.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      const row = e.target.closest('.row');
+      if (row) row.classList.toggle('open');
+    });
+
     render();
   </script>
 </body>

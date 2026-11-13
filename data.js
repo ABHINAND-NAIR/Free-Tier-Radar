@@ -6,6 +6,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "Unlimited bandwidth, 500 builds/month",
     "catch": "Builds pause at 500/month — fine for hobby projects",
+    "bestfor": "Static sites, portfolios, sites with light serverless functions",
+    "risk": "low",
+    "alt": "GitHub Pages, Netlify",
     "link": "https://pages.cloudflare.com/",
     "checked": "2026-11-13"
   },
@@ -16,6 +19,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "1 GB site, 100 GB/month bandwidth, static only",
     "catch": "Static sites only — no server code",
+    "bestfor": "Portfolios, documentation, project landing pages",
+    "risk": "low",
+    "alt": "Cloudflare Pages (if you need functions)",
     "link": "https://pages.github.com/",
     "checked": "2026-11-13"
   },
@@ -26,6 +32,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "100 GB bandwidth/month, serverless functions",
     "catch": "Commercial use technically not allowed on Hobby plan",
+    "bestfor": "Next.js / React apps, API prototypes",
+    "risk": "medium",
+    "alt": "Netlify, Cloudflare Pages",
     "link": "https://vercel.com/pricing",
     "checked": "2026-11-13"
   },
@@ -36,6 +45,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "100 GB bandwidth/month, 300 build minutes/month",
     "catch": "Build minutes run out fast if you redeploy constantly",
+    "bestfor": "Static sites with forms and edge functions",
+    "risk": "medium",
+    "alt": "Cloudflare Pages (10x the build minutes)",
     "link": "https://www.netlify.com/pricing/",
     "checked": "2026-11-13"
   },
@@ -46,6 +58,9 @@ const SERVICES = [
     "card_required": true,
     "limits": "Free web service spins down after 15 min idle",
     "catch": "Card required upfront; cold starts make it feel broken",
+    "bestfor": "Nothing free — the free tier exists to funnel you upward",
+    "risk": "high",
+    "alt": "Oracle Cloud free VM (always-on, no cold starts)",
     "link": "https://render.com/pricing",
     "checked": "2026-11-13"
   },
@@ -56,6 +71,9 @@ const SERVICES = [
     "card_required": true,
     "limits": "Up to 4 ARM cores + 24 GB RAM — genuinely huge",
     "catch": "Card needed just to sign up (verification); popular regions often out of capacity",
+    "bestfor": "A real always-on Linux server — the strongest free deal in hosting",
+    "risk": "low",
+    "alt": "A ~$4/month VPS if your region has no capacity",
     "link": "https://www.oracle.com/cloud/free/",
     "checked": "2026-11-13"
   },
@@ -66,6 +84,9 @@ const SERVICES = [
     "card_required": true,
     "limits": "Most offers last 12 months only; some services always-free",
     "catch": "Card required; after 12 months you get billed unless you shut everything down",
+    "bestfor": "Learning real cloud skills; short, watched experiments",
+    "risk": "high",
+    "alt": "Oracle Cloud (no expiry), GCP always-free slice",
     "link": "https://aws.amazon.com/free/",
     "checked": "2026-11-13"
   },
@@ -76,6 +97,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "2 projects, 500 MB database, pauses after 1 week inactivity",
     "catch": "Project pauses if unused for 7 days — click to restore",
+    "bestfor": "Auth + Postgres + storage for side projects, all in one",
+    "risk": "medium",
+    "alt": "Neon (Postgres), MongoDB Atlas (NoSQL)",
     "link": "https://supabase.com/pricing",
     "checked": "2026-11-13"
   },
@@ -86,6 +110,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "512 MB cluster, shared",
     "catch": "Shared cluster is slow; fine for learning",
+    "bestfor": "Learning NoSQL; small apps with light traffic",
+    "risk": "low",
+    "alt": "Supabase if you'd rather learn Postgres",
     "link": "https://www.mongodb.com/cloud/atlas",
     "checked": "2026-11-13"
   },
@@ -96,6 +123,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "Serverless Postgres, ~0.5 GB storage, autosuspends",
     "catch": "Cold-start delay after inactivity; compute hours capped monthly",
+    "bestfor": "Serverless apps; branches-per-PR database workflows",
+    "risk": "medium",
+    "alt": "Supabase (no cold start, but project pauses)",
     "link": "https://neon.com/pricing",
     "checked": "2026-11-13"
   },
@@ -106,6 +136,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "Serverless Redis, 10k commands/day free",
     "catch": "Per-command pricing means a popular app quietly exceeds the daily cap",
+    "bestfor": "Caching, rate limiting, small queues between serverless functions",
+    "risk": "medium",
+    "alt": "Redis on an Oracle free VM (uncapped, self-managed)",
     "link": "https://upstash.com/pricing",
     "checked": "2026-11-13"
   },
@@ -116,6 +149,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "Free tier with per-day request limits on Gemini models",
     "catch": "Free tier data may be used by Google for improvement — don't send sensitive prompts",
+    "bestfor": "Prototyping with frontier-grade models at zero cost",
+    "risk": "low",
+    "alt": "Groq (speed), OpenRouter (variety)",
     "link": "https://aistudio.google.com/",
     "checked": "2026-11-13"
   },
@@ -126,6 +162,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "Free tier with rate limits, very fast LLMs",
     "catch": "Rate limits hit hard on free tier; needs monitoring",
+    "bestfor": "Agents and real-time features that need sub-second tokens",
+    "risk": "medium",
+    "alt": "Gemini free tier (higher limits, slower)",
     "link": "https://groq.com/",
     "checked": "2026-11-13"
   },
@@ -136,6 +175,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "Many models have ':free' variants with daily request caps",
     "catch": "Free models get throttled and can disappear anytime; paid models need credits",
+    "bestfor": "Testing many models with one key before committing",
+    "risk": "medium",
+    "alt": "Each provider's own free tier (Gemini, Groq)",
     "link": "https://openrouter.ai/",
     "checked": "2026-11-13"
   },
@@ -146,6 +188,9 @@ const SERVICES = [
     "card_required": false,
     "limits": "100 emails/day, 3,000/month, 1 custom domain",
     "catch": "100/day sounds small but covers most hobby projects",
+    "bestfor": "Signup codes, notifications, contact forms",
+    "risk": "low",
+    "alt": "Brevo free tier (300/day) if you outgrow it",
     "link": "https://resend.com/pricing",
     "checked": "2026-11-13"
   }
