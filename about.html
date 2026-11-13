@@ -20,7 +20,13 @@
       color: var(--faint); display: flex; justify-content: space-between;
       border-bottom: 2px solid var(--line); padding-bottom: 6px;
     }
-    .kicker a { color: var(--alarm); text-decoration: none; }
+    .kicker a {
+      color: var(--alarm); text-decoration: none;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em;
+      border: 2px solid var(--alarm); padding: 6px 12px;
+      transition: background .15s, color .15s;
+    }
+    .kicker a:hover { background: var(--alarm); color: var(--paper); }
     h1 { font-family: var(--mono); font-size: clamp(1.8rem, 6vw, 2.6rem); letter-spacing: -0.02em; margin: 20px 0 16px; }
     h1 mark { background: var(--marker); padding: 0 6px; }
     h2 { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; border-bottom: 2px solid var(--line); padding-bottom: 5px; margin: 34px 0 12px; }
@@ -33,7 +39,14 @@
     .changelog { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     .changelog td { border-bottom: 1px solid var(--line); padding: 8px 6px; vertical-align: top; }
     .changelog td:first-child { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); white-space: nowrap; width: 110px; }
-    footer { margin-top: 44px; border-top: 2px solid var(--line); padding-top: 12px; font-family: var(--mono); font-size: 0.72rem; color: var(--faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    footer { margin-top: 44px; border-top: 2px solid var(--line); padding-top: 12px; font-family: var(--mono); font-size: 0.72rem; color: var(--faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; align-items: center; }
+    footer a {
+      color: var(--alarm); text-decoration: none;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.08em;
+      border: 2px solid var(--alarm); padding: 6px 12px;
+      transition: background .15s, color .15s;
+    }
+    footer a:hover { background: var(--alarm); color: var(--paper); }
   </style>
 </head>
 <body>
