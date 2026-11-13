@@ -37,6 +37,10 @@
       letter-spacing: -0.03em; margin: 18px 0 6px;
     }
     h1 .red { color: var(--alarm); }
+    h1 .red::after {   /* highlighter swoosh under RADAR */
+      content: ""; display: block; height: 14px; margin-top: -6px;
+      background: var(--marker); transform: rotate(-1deg);
+    }
     .standfirst {
       font-size: 1.05rem; font-style: italic; max-width: 560px; color: var(--ink);
       margin-bottom: 4px;
@@ -59,21 +63,36 @@
       background: none; border: none; border-bottom: 1px solid var(--line);
       padding: 10px 12px; cursor: pointer; color: var(--faint); text-transform: uppercase;
     }
-    .tab[aria-pressed="true"] { color: var(--ink); box-shadow: inset 0 -3px 0 var(--marker); font-weight: 700; }
+    .tab[aria-pressed="true"] {
+      color: var(--ink); background: var(--marker); font-weight: 700;
+      box-shadow: inset 0 -3px 0 var(--ink);
+    }
+    #search:focus { border-bottom: 3px solid var(--marker); background: #fffbe0; }
     .tally { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); margin: 8px 0 0; }
 
     /* ---------- the register: rows, not cards ---------- */
     .row {
       border-bottom: 1px solid var(--line);
-      padding: 14px 2px 12px;
+      padding: 14px 10px 12px;
       display: grid; grid-template-columns: 1fr auto; gap: 4px 14px;
       align-items: baseline;
+      border-left: 6px solid transparent;
+      transition: background .15s;
     }
+    .row.r-forever { border-left-color: #0a7a1f; background: #f2fbee; }
+    .row.r-trial   { border-left-color: #d98a00; background: #fdf6e3; }
+    .row.r-trap    { border-left-color: var(--alarm); background: #fdeceb; }
+    .row.r-plain   { background: transparent; }
+    .row:hover { background: #fff9c9; }
     .row:first-of-type { border-top: 2px solid var(--line); margin-top: 12px; }
     .svc { font-weight: 700; font-size: 1.06rem; }
     .svc a { color: var(--ink); text-decoration: none; }
     .svc a:hover { background: var(--marker); }
-    .svc .cat { font-family: var(--mono); font-size: 0.66rem; color: var(--faint); letter-spacing: 0.1em; text-transform: uppercase; margin-left: 8px; }
+    .svc .cat { font-family: var(--mono); font-size: 0.66rem; color: var(--faint); letter-spacing: 0.1em; text-transform: uppercase; margin-left: 8px; padding: 1px 6px; border-radius: 3px; }
+    .cat-hosting { background: #e4ecff; color: #1d5fd6; }
+    .cat-database { background: #fdeebf; color: #b97500; }
+    .cat-ai { background: #f3e8ff; color: #7a2fd6; }
+    .cat-email { background: #d9f7dd; color: #0a7a1f; }
 
     .stamp {
       font-family: var(--mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
@@ -81,10 +100,10 @@
       transform: rotate(-2deg); white-space: nowrap;
       justify-self: end;
     }
-    .st-forever { color: #0a7a1f; }
-    .st-trial   { color: #b97500; transform: rotate(1.5deg); }
-    .st-trap    { color: var(--alarm); }
-    .st-card    { color: var(--faint); border-style: dashed; font-size: 0.62rem; transform: rotate(2deg); }
+    .st-forever { color: #0a7a1f; background: #d9f7dd; }
+    .st-trial   { color: #b97500; background: #fdeebf; transform: rotate(1.5deg); }
+    .st-trap    { color: var(--alarm); background: #ffd9d6; }
+    .st-card    { color: #1d5fd6; background: #e4ecff; border-style: dashed; font-size: 0.62rem; transform: rotate(2deg); }
 
     .gets, .catch { font-size: 0.92rem; grid-column: 1 / -1; }
     .gets::before  { content: "you get: "; font-family: var(--mono); font-size: 0.7rem; color: var(--faint); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -157,7 +176,7 @@
         <dd>Generous — until the clock runs out (often 12 months) and billing starts unless you act.</dd>
         <dt style="color:var(--alarm)">card trap</dt>
         <dd>Wants a credit card for a "free" tier. Cross the limit and the charge is automatic.</dd>
-        <dt style="color:var(--faint)">card req.</dt>
+        <dt style="color:#1d5fd6">card req.</dt>
         <dd>The free tier is genuine, but a card is demanded just to walk in the door (verification).</dd>
       </dl>
       <p class="note">Providers change their terms without telling anyone. Every verdict above carries
@@ -190,8 +209,8 @@
       count.textContent = items.length + ' / ' + SERVICES.length + ' services on the radar';
       empty.style.display = items.length ? 'none' : 'block';
       list.innerHTML = items.map(s => `
-        <div class="row">
-          <div class="svc"><a href="${s.link}" target="_blank" rel="noopener">${s.name}</a><span class="cat">${s.category}</span></div>
+        <div class="row r-${s.verdict === 'free-forever' ? 'forever' : s.verdict === 'trial' || s.verdict === 'credit-based' ? 'trial' : 'trap'}">
+          <div class="svc"><a href="${s.link}" target="_blank" rel="noopener">${s.name}</a><span class="cat cat-${s.category}">${s.category}</span></div>
           <div class="stamp ${stampClass[s.verdict]}">${stampText[s.verdict]}</div>
           ${s.card_required ? '<div class="stamp st-card">card req.</div>' : ''}
           <div class="gets">${s.limits}</div>
