@@ -51,6 +51,6 @@ teaches real engineering, and becomes the Google-portfolio flagship.
 - Hosting: GitHub Pages (free forever)
 - Later (Phase 2): one small serverless function for the AI feature
 
-## Definition of DONE (Phase 1)
+## Definition of DONE (Phase 1) — ✅ MET Nov 14
 A stranger can open the live link, search a service, and see an honest verdict
-in under 5 seconds — on their phone.
+in under 5 seconds — on their phone. (Verified by Abhi on mobile, Nov 14.)
