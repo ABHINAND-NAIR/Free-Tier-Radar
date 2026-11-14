@@ -25,12 +25,10 @@ teaches real engineering, and becomes the Google-portfolio flagship.
       search box, category filter. Plain HTML/CSS/JS. No frameworks yet.
 - [x] Step 3: Polish — mobile-friendly, clean design, "how we judge" page
       (superseded: full editorial redesign + color pass + depth pass + about page + FAQ)
-- [ ] Step 4: Push to GitHub, deploy on GitHub Pages, get the live link
-      ⚠️ BLOCKED Nov 13: GitHub flagged the laptop's network IP (bot-activity block, ID 8c25bf1f...),
-      hits the normal browser too. Resume options: (a) phone hotspot trick → normal browser upload,
-      (b) wait ~1 hr for cooldown, (c) Netlify Drop (sign in with Google, drag folder) then mirror
-      to GitHub later. Files ready in this folder: index.html, about.html, data.js, data/services.json.
-      Upload tip: drag the FILES (open data folder for services.json), repo must be Public, no README.
+- [x] Step 4: Push to GitHub, deploy on GitHub Pages, get the live link (DONE Nov 14 —
+      bot-block cleared after ~1 day; pushed main branch; Pages live at
+      https://abhinand-nair.github.io/Free-Tier-Radar/ — index.html, about.html,
+      data/services.json all verified HTTP 200)
 - [ ] Step 5: Share it in 2–3 places (X, a Discord, a subreddit). Collect reactions.
 
 ## Phase 2 — AI layer (next week)
