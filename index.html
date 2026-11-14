@@ -51,23 +51,29 @@
       margin: 10px 0 26px;
     }
 
-    /* ---------- controls: flat, underline, not chips ---------- */
-    .controls { display: flex; gap: 0; flex-wrap: wrap; align-items: stretch; border-top: 1px solid var(--line); }
+    /* ---------- controls: boxed search + colored tabs ---------- */
+    .controls { display: flex; gap: 8px 10px; flex-wrap: wrap; align-items: center; border-top: 1px solid var(--line); padding-top: 12px; }
     #search {
-      flex: 1 1 240px; padding: 10px 4px; font-family: var(--mono); font-size: 0.9rem;
-      background: transparent; border: none; border-bottom: 1px solid var(--line); outline: none;
+      flex: 1 1 260px; padding: 12px 14px; font-family: var(--mono); font-size: 1rem;
+      background: #fffbe0; border: 2px solid var(--ink); outline: none;
+      box-shadow: 3px 3px 0 var(--marker);
     }
     #search::placeholder { color: var(--faint); }
+    #search:focus { background: #fff; border-color: var(--alarm); box-shadow: 3px 3px 0 #ffd9d6; }
     .tab {
       font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em;
-      background: none; border: none; border-bottom: 1px solid var(--line);
-      padding: 10px 12px; cursor: pointer; color: var(--faint); text-transform: uppercase;
+      background: none; border: 1px solid var(--line);
+      padding: 9px 12px; cursor: pointer; color: var(--faint); text-transform: uppercase;
+      transition: background .15s, color .15s;
     }
+    .tab:hover { color: var(--ink); background: #fff9c9; }
     .tab[aria-pressed="true"] {
       color: var(--ink); background: var(--marker); font-weight: 700;
-      box-shadow: inset 0 -3px 0 var(--ink);
     }
-    #search:focus { border-bottom: 3px solid var(--marker); background: #fffbe0; }
+    .tab[data-filter="hosting"][aria-pressed="true"]  { background: #1d5fd6; color: #fff; }
+    .tab[data-filter="database"][aria-pressed="true"] { background: #b97500; color: #fff; }
+    .tab[data-filter="ai"][aria-pressed="true"]       { background: #7a2fd6; color: #fff; }
+    .tab[data-filter="email"][aria-pressed="true"]    { background: #0a7a1f; color: #fff; }
     .tally { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); margin: 8px 0 0; }
 
     /* ---------- the register: rows, not cards ---------- */
@@ -190,7 +196,7 @@
     <div class="stats" id="stats"></div>
 
     <div class="controls">
-      <input id="search" type="search" placeholder='search…  ( press "/" )' autocomplete="off">
+      <input id="search" type="search" placeholder='🔍 search a service…  ( press "/" )' autocomplete="off">
       <button class="tab" data-filter="all" aria-pressed="true">All</button>
       <button class="tab" data-filter="hosting" aria-pressed="false">Hosting</button>
       <button class="tab" data-filter="database" aria-pressed="false">Databases</button>
@@ -347,12 +353,12 @@
     const noCard = SERVICES.filter(s => !s.card_required).length;
     const cats = new Set(SERVICES.map(s => s.category)).size;
     stats.innerHTML = [
-      [SERVICES.length, 'services judged'],
-      [cats, 'categories'],
-      [traps + ' / ' + trials, 'card traps / trials'],
-      [noCard, 'need no card'],
-      [SERVICES.filter(s => s.verdict === 'free-forever').length, 'free forever']
-    ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+      [SERVICES.length, 'services judged', ''],
+      [cats, 'categories', ''],
+      [traps + ' / ' + trials, 'card traps / trials', 'var(--alarm)'],
+      [noCard, 'need no card', '#0a7a1f'],
+      [SERVICES.filter(s => s.verdict === 'free-forever').length, 'free forever', '#0a7a1f']
+    ].map(([v, l, c]) => `<div class="stat"><b ${c ? `style="color:${c}"` : ''}>${v}</b><span>${l}</span></div>`).join('');
 
     // expandable rows (click anywhere except links)
     list.addEventListener('click', e => {
