@@ -106,6 +106,18 @@
     .faq summary { cursor: pointer; font-weight: 700; font-size: 0.98rem; }
     .faq details p { margin-top: 6px; font-size: 0.92rem; color: var(--ink); }
     .faq a { color: var(--alarm); }
+    .request { margin-top: 36px; border-top: 2px solid var(--line); padding-top: 14px; }
+    .request h3 { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
+    .request p { font-size: 0.95rem; }
+    .request ol { margin: 8px 0 4px 20px; font-size: 0.93rem; }
+    .request li { margin: 3px 0; }
+    .request small { color: var(--faint); font-size: 0.8rem; }
+    .btn {
+      color: var(--alarm); text-decoration: none; font-weight: 700; font-size: 0.95rem;
+      letter-spacing: 0.08em; border: 2px solid var(--alarm); padding: 8px 14px;
+      display: inline-block; margin-top: 8px; transition: background .15s, color .15s;
+    }
+    .btn:hover { background: var(--alarm); color: var(--paper); }
     .row:first-of-type { border-top: 2px solid var(--line); margin-top: 12px; }
     .svc { font-weight: 700; font-size: 1.06rem; }
     .svc a { color: var(--ink); text-decoration: none; }
@@ -221,7 +233,7 @@
       </details>
       <details>
         <summary>A service changed its terms — what do I do?</summary>
-        <p>Tell us and it gets re-checked and re-stamped the same day. Wrong verdicts are the worst thing
+        <p>Tell us with the <a href="https://github.com/ABHINAND-NAIR/Free-Tier-Radar/issues/new?title=Wrong%20verdict%20report%3A%20%5Bservice%20name%5D&body=%2A%2AService%3A%2A%2A%0A%2A%2AWhat%20changed%20%2F%20what%27s%20wrong%3A%2A%2A%0A%2A%2ASource%20%28their%20pricing%20page%29%3A%2A%2A%0A" target="_blank" rel="noopener">report link in the footer</a> and it gets re-checked and re-stamped the same day. Wrong verdicts are the worst thing
            this page can publish, so they get fixed first.</p>
       </details>
       <details>
@@ -243,9 +255,21 @@
       </details>
     </section>
 
+    <section class="request">
+      <h3>Not on the radar? Put it there.</h3>
+      <p>Missing a service you're about to trust with your project? Ask for its verdict — it takes under a minute:</p>
+      <ol>
+        <li>Click the button below</li>
+        <li>Type the service name and paste its pricing page link</li>
+        <li>Send — done. The most-requested ones get verified and stamped first.</li>
+      </ol>
+      <a class="btn" href="https://github.com/ABHINAND-NAIR/Free-Tier-Radar/issues/new?title=Verdict%20request%3A%20%5Bservice%20name%5D&body=%2A%2AService%20name%3A%2A%2A%0A%2A%2APricing%20page%20URL%3A%2A%2A%0A%2A%2AWhy%20judge%20it%3F%2A%2A%20%28optional%29%0A" target="_blank" rel="noopener">REQUEST A VERDICT →</a>
+      <p><small>Opens GitHub, where the requests live publicly — you can see every pending one and vote by adding 👍. A free GitHub account is needed to post; not to look.</small></p>
+    </section>
+
     <footer>
       <span>free tier radar · built by Abhinand Nair, 18 · <a href="about.html" style="color:var(--alarm)">the story →</a></span>
-      <span>report a wrong verdict — it'll be fixed same day</span>
+      <span><a href="https://github.com/ABHINAND-NAIR/Free-Tier-Radar/issues/new?title=Wrong%20verdict%20report%3A%20%5Bservice%20name%5D&body=%2A%2AService%3A%2A%2A%0A%2A%2AWhat%20changed%20%2F%20what%27s%20wrong%3A%2A%2A%0A%2A%2ASource%20%28their%20pricing%20page%29%3A%2A%2A%0A" target="_blank" rel="noopener" style="color:var(--alarm)">report a wrong verdict</a> — it'll be fixed same day</span>
     </footer>
   </div>
 
